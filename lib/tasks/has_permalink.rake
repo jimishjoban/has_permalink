@@ -6,10 +6,12 @@ namespace :has_permalink do
     rescue
       puts "ERROR: You need to pass the name of the model as an argument."
       puts "Try this: 'rake has_permalink:generate_permalinks[MODEL]'"
-    elsif model_name.include?("::")  # Generating permalinks for class inside a module For e.g "ActsAsTaggableOn::Tag"
-      get_class_and_generate_permalink(model_name) 
     else
-      generate_permalinks(model_name)
+      if model_name.include?("::")  # Generating permalinks for class inside a module For e.g "ActsAsTaggableOn::Tag"
+        get_class_and_generate_permalink(model_name) 
+      else
+        generate_permalinks(model_name)
+      end
     end
   end
 end
@@ -23,7 +25,6 @@ def generate_permalinks(model_name)
     end
   rescue
     rescue_error(model_name)
-    puts "Can't find model '#{model_name}'. Does it exist?"
   end
 end
 
